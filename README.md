@@ -1,36 +1,102 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 📚 Cloud Bookstore [![Live Demo](https://img.shields.io/badge/demo-live-brightgreen)](https://cloud-bookstore.vercel.app/)
 
-## Getting Started
+A modern cloud-based digital bookstore platform with seamless reading experiences across devices. Discover, read, and manage your favorite books in one place.
 
-First, run the development server:
+![Project Preview](https://images.unsplash.com/photo-1497633762265-9d179a990aa6?w=1200&h=630&fit=crop)
 
+## 🌟 Features
+
+- **Cloud-Synced Library** - Access your bookshelf from any device
+- **Smart Search** - Find books by title, author, or genre
+- **Interactive Book Previews** - Read samples before purchasing
+- **Personalized Recommendations** - AI-powered suggestions based on your reading habits
+- **Secure Payments** - Integrated shopping cart and checkout system
+- **Reading Progress Tracking** - Never lose your place in a book
+- **Multi-device Sync** - Continue reading on any device
+
+## 🚀 Quick Start
+
+1. Clone the repository:
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/yourusername/cloud-bookstore.git
+cd cloud-bookstore
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Install dependencies:
+```bash
+npm install
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+3. Set up environment variables (create `.env.local`):
+```env
+NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_anon_key
+SUPABASE_SERVICE_KEY=your_service_key
+NEXT_PUBLIC_APP_URL=http://localhost:3000
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+4. Start development server:
+```bash
+npm run dev
+```
 
-## Learn More
+5. Seed the database:
+```bash
+npm run seed
+```
 
-To learn more about Next.js, take a look at the following resources:
+## 🛠️ Tech Stack
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- **Frontend**: Next.js 14 + TypeScript
+- **Styling**: Tailwind CSS + Shadcn UI
+- **Database**: Supabase PostgreSQL
+- **State Management**: React Context + Zustand
+- **Animation**: Framer Motion
+- **Deployment**: Vercel
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 📦 Database Schema
 
-## Deploy on Vercel
+```mermaid
+erDiagram
+    books ||--o{ book_categories : "has"
+    categories ||--o{ book_categories : "has"
+    users ||--o{ user_library : "owns"
+    books ||--o{ user_library : "included-in"
+    users ||--o{ reviews : "writes"
+    books ||--o{ reviews : "has"
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 🌐 Deployment
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fyourusername%2Fcloud-bookstore)
+
+2. Set these environment variables in Vercel:
+   - `NEXT_PUBLIC_SUPABASE_URL`
+   - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+   - `SUPABASE_SERVICE_KEY`
+   - `NEXT_PUBLIC_APP_URL`
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create feature branch:
+```bash
+git checkout -b feature/amazing-feature
+```
+3. Commit changes:
+```bash
+git commit -m 'Add amazing feature'
+```
+4. Push to branch:
+```bash
+git push origin feature/amazing-feature
+```
+5. Open a Pull Request
+
+## 📄 License
+
+MIT License - see [LICENSE](LICENSE) for details
+
+---
+
+[Explore Live Demo](https://cloud-bookstore.vercel.app/) | [Report Issue](https://github.com/yourusername/cloud-bookstore/issues) | [Request Feature](https://github.com/devjoshi2804/cloud-bookstore/issues)
