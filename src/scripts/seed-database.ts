@@ -7,30 +7,49 @@ import * as dotenv from "dotenv"
 dotenv.config({ path: join(process.cwd(), ".env.local") })
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+const supabaseServiceKey = process.env.SUPABASE_SERVICE_KEY
 
-if (!supabaseUrl || !supabaseKey) {
+if (!supabaseUrl || !supabaseServiceKey) {
   console.error("Missing Supabase credentials in .env.local")
   process.exit(1)
 }
 
-const supabase = createClient(supabaseUrl, supabaseKey)
+// Create a Supabase client with the service key for admin operations
+const supabase = createClient(supabaseUrl, supabaseServiceKey, {
+  auth: {
+    autoRefreshToken: false,
+    persistSession: false
+  }
+})
 
 async function seedDatabase() {
   try {
     console.log("Starting database seeding...")
 
-    // Read and execute the seed file
+    // Read the seed file
     const seedPath = join(process.cwd(), "supabase/seed.sql")
     const seedSql = readFileSync(seedPath, "utf-8")
     
     console.log("Executing seed...")
-    const { error: seedError } = await supabase.rpc("exec_sql", {
-      sql: seedSql
-    })
-    
-    if (seedError) throw seedError
-    console.log("Seed completed successfully")
+    try {
+      // Execute the seed SQL as a single transaction
+      const { error } = await supabase.rpc('run_migration', { 
+        sql: seedSql 
+      })
+      if (error) throw error
+      console.log("Seed completed successfully")
+    } catch (error) {
+      console.error("Seed execution failed:", error)
+      console.error("You may need to add the 'run_migration' function to your Supabase database.")
+      console.error("Please run the following SQL in the Supabase SQL editor:")
+      console.error(`
+CREATE OR REPLACE FUNCTION run_migration(sql text) RETURNS void AS $$
+BEGIN
+  EXECUTE sql;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+      `)
+    }
 
     console.log("Database seeding completed successfully!")
   } catch (error) {

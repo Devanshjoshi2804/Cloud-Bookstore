@@ -5,7 +5,7 @@ import Link from "next/link"
 import { motion } from "framer-motion"
 import { BookOpen, Star, Heart, ShoppingCart } from "lucide-react"
 import { cn } from "@/lib/utils"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Button } from "./ui/button"
 import { useToast } from "./ui/use-toast"
 import { supabase } from "@/lib/supabase"
@@ -34,8 +34,38 @@ export function BookCard({
 }: BookCardProps) {
   const [isHovered, setIsHovered] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
+  const [imageSrc, setImageSrc] = useState(coverImage || '')
+  const [imageError, setImageError] = useState(false)
   const { toast } = useToast()
   const { dispatch } = useCart()
+
+  // Set up fallback images
+  const [fallbackIndex, setFallbackIndex] = useState(0)
+  const fallbackImages = [
+    coverImage || '',
+    // If Amazon URL has ISBN format, extract ISBN for Open Library
+    coverImage?.includes('images.amazon.com/images/P') 
+      ? `https://covers.openlibrary.org/b/isbn/${coverImage.match(/P\/([0-9X]+)\.01/)?.[1] || '0000000000'}-M.jpg` 
+      : '',
+    // Unsplash fallbacks
+    'https://images.unsplash.com/photo-1544947950-fa07a98d237f?w=400&h=600&fit=crop',
+    'https://images.unsplash.com/photo-1532012197267-da84d127e765?w=400&h=600&fit=crop',
+    'https://images.unsplash.com/photo-1543002588-bfa74002ed7e?w=400&h=600&fit=crop'
+  ].filter(url => url.length > 0)
+
+  useEffect(() => {
+    setImageSrc(fallbackImages[fallbackIndex] || fallbackImages[fallbackImages.length - 1])
+  }, [fallbackIndex, fallbackImages])
+
+  const handleImageError = () => {
+    // Move to next fallback image
+    if (fallbackIndex < fallbackImages.length - 1) {
+      setFallbackIndex(prev => prev + 1)
+    } else {
+      // If we've exhausted all options, use the last fallback
+      setImageSrc('https://images.unsplash.com/photo-1543002588-bfa74002ed7e?w=400&h=600&fit=crop')
+    }
+  }
 
   const handleAddToLibrary = async () => {
     try {
@@ -104,11 +134,14 @@ export function BookCard({
       <Link href={`/books/${id}`}>
         <div className="aspect-[2/3] relative overflow-hidden rounded-md">
           <Image
-            src={coverImage}
+            src={imageSrc}
             alt={title}
             fill
             className="object-cover transition-transform duration-500 group-hover:scale-105"
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            onError={handleImageError}
+            priority={false}
+            loading="lazy"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
         </div>

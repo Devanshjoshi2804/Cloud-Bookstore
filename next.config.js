@@ -14,7 +14,24 @@ const nextConfig = {
     ignoreBuildErrors: true,
   },
   images: {
-    domains: ['images.unsplash.com'],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'images.unsplash.com'
+      },
+      {
+        protocol: 'http',
+        hostname: 'images.amazon.com'
+      },
+      {
+        protocol: 'https',
+        hostname: 'images.amazon.com'
+      },
+      {
+        protocol: 'https',
+        hostname: 'covers.openlibrary.org'
+      }
+    ],
   },
 }
 

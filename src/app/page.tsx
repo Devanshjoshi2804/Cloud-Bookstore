@@ -1,17 +1,22 @@
-import { Metadata } from "next"
+"use client"
+
 import { Hero } from "@/components/hero"
 import { Features } from "@/components/features"
-
-export const metadata: Metadata = {
-  title: "Cloud Bookstore - Your Digital Reading Companion",
-  description: "Discover and read your favorite books online with our cloud-based bookstore platform.",
-}
+import { BookCarousel } from "@/components/book-carousel"
+import { Testimonials } from "@/components/testimonials"
+import { CTA } from "@/components/cta"
+import { CategoryPreview } from "@/components/category-preview"
 
 export default function HomePage() {
   return (
     <div className="flex-1">
       <Hero />
+      <CategoryPreview />
       <Features />
+      <BookCarousel title="New Releases" category="new" />
+      <Testimonials />
+      <BookCarousel title="Popular Picks" category="popular" />
+      <CTA />
     </div>
   )
 }

@@ -14,6 +14,7 @@ create table if not exists public.books (
     id uuid primary key default uuid_generate_v4(),
     title text not null,
     author text not null,
+    isbn text,
     description text,
     cover_image text,
     price decimal(10,2) not null,
@@ -21,6 +22,7 @@ create table if not exists public.books (
     published_date date,
     page_count integer,
     genre text,
+    publisher text,
     language text not null default 'English',
     created_at timestamp with time zone default timezone('utc'::text, now()) not null,
     updated_at timestamp with time zone default timezone('utc'::text, now()) not null
