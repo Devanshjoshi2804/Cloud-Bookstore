@@ -59,8 +59,28 @@ const categories = [
 export function CategoryPreview() {
   return (
     <section className="py-16 relative overflow-hidden">
-      <div className="absolute inset-0 opacity-10 bg-[linear-gradient(45deg,#f3f4f6_25%,transparent_25%,transparent_50%,#f3f4f6_50%,#f3f4f6_75%,transparent_75%,transparent)] bg-[length:16px_16px]" />
+      {/* <div className="absolute inset-0 opacity-10 bg-[linear-gradient(45deg,#f3f4f6_25%,transparent_25%,transparent_50%,#f3f4f6_50%,#f3f4f6_75%,transparent_75%,transparent)] bg-[length:16px_16px]" /> */}
+  {/* Background elements */}
+  <div className="absolute inset-0 bg-gradient-to-b from-primary/5 via-primary/10 to-background z-0">
+        <div className="absolute inset-0 opacity-20 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px] [mask-image:radial-gradient(ellipse_50%_50%_at_50%_50%,#000_70%,transparent_100%)]" />
+      </div>
       
+      {/* Decorative elements */}
+      <div className="absolute top-1/4 -left-10 w-40 h-40 bg-primary/40 rounded-full filter blur-3xl opacity-20 animate-pulse" />
+      <div className="absolute bottom-1/4 -right-10 w-60 h-60 bg-primary-foreground/30 rounded-full filter blur-3xl opacity-10 animate-pulse" style={{ animationDelay: '1s', animationDuration: '8s' }} />
+
+      {/* Floating books decoration */}
+      <div className="absolute -right-20 top-40 opacity-10 rotate-12">
+        <div className="opacity-10">
+          <BookOpen className="h-96 w-96" />
+        </div>
+      </div>
+      
+      {/* Animated circles */}
+      <div className="absolute left-1/4 top-1/3 w-4 h-4 rounded-full bg-primary animate-ping" style={{ animationDuration: '3s', animationDelay: '0.5s' }} />
+      <div className="absolute right-1/3 bottom-1/4 w-3 h-3 rounded-full bg-primary-foreground animate-ping" style={{ animationDuration: '4s', animationDelay: '1s' }} />
+      <div className="absolute left-1/3 bottom-1/3 w-2 h-2 rounded-full bg-primary/60 animate-ping" style={{ animationDuration: '5s', animationDelay: '1.5s' }} />
+
       <div className="container relative z-10">
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
           <div>
