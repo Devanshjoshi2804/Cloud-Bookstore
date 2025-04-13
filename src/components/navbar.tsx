@@ -13,6 +13,7 @@ const navigation = [
   { name: "Books", href: "/books" },
   { name: "Categories", href: "/categories" },
   { name: "About", href: "/about" },
+  { name: "Commnity", href: "/community" },
 ]
 
 interface NavbarProps {
@@ -63,9 +64,9 @@ export function Navbar({ onCartClick }: NavbarProps) {
           ))}
         </div>
         <div className="hidden lg:flex lg:flex-1 lg:justify-end lg:gap-x-4">
-          <Button variant="ghost" size="icon">
+          {/* <Button variant="ghost" size="icon">
             <Search className="h-5 w-5" />
-          </Button>
+          </Button> */}
           <Button variant="ghost" size="icon">
             <User className="h-5 w-5" />
           </Button>
