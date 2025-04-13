@@ -2,16 +2,18 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { Moon, Sun, Menu, X, BookOpen, Search, User, ShoppingCart } from "lucide-react"
+import { Moon, Sun, Menu, X, BookOpen, ShoppingCart } from "lucide-react"
 import { useTheme } from "next-themes"
 import { Button } from "@/components/ui/button"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useCart } from "@/contexts/cart-context"
+import { UserAuthStatus } from "./user-auth-status"
 
 const navigation = [
   { name: "Home", href: "/" },
   { name: "Books", href: "/books" },
   { name: "Categories", href: "/categories" },
+  { name: "Library", href: "/library" },
   { name: "About", href: "/about" },
   { name: "Commnity", href: "/community" },
 ]
@@ -23,8 +25,33 @@ interface NavbarProps {
 export function Navbar({ onCartClick }: NavbarProps) {
   const pathname = usePathname()
   const { theme, setTheme } = useTheme()
+  const [mounted, setMounted] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const { state } = useCart()
+  
+  // After hydration, we can show the theme switcher
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  // Theme toggle button that only renders icon on client-side
+  const ThemeToggle = () => {
+    if (!mounted) return <div className="h-5 w-5" />; // Placeholder with same dimensions
+    
+    return (
+      <Button
+        variant="ghost"
+        size="icon"
+        onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+      >
+        {theme === "dark" ? (
+          <Sun className="h-5 w-5" />
+        ) : (
+          <Moon className="h-5 w-5" />
+        )}
+      </Button>
+    );
+  };
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -64,23 +91,8 @@ export function Navbar({ onCartClick }: NavbarProps) {
           ))}
         </div>
         <div className="hidden lg:flex lg:flex-1 lg:justify-end lg:gap-x-4">
-          {/* <Button variant="ghost" size="icon">
-            <Search className="h-5 w-5" />
-          </Button> */}
-          <Button variant="ghost" size="icon">
-            <User className="h-5 w-5" />
-          </Button>
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-          >
-            {theme === "dark" ? (
-              <Sun className="h-5 w-5" />
-            ) : (
-              <Moon className="h-5 w-5" />
-            )}
-          </Button>
+          <UserAuthStatus />
+          <ThemeToggle />
           <Button
             variant="ghost"
             size="icon"
@@ -115,23 +127,8 @@ export function Navbar({ onCartClick }: NavbarProps) {
               </Link>
             ))}
             <div className="mt-4 flex items-center justify-center space-x-4">
-              <Button variant="ghost" size="icon">
-                <Search className="h-5 w-5" />
-              </Button>
-              <Button variant="ghost" size="icon">
-                <User className="h-5 w-5" />
-              </Button>
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-              >
-                {theme === "dark" ? (
-                  <Sun className="h-5 w-5" />
-                ) : (
-                  <Moon className="h-5 w-5" />
-                )}
-              </Button>
+              <UserAuthStatus />
+              <ThemeToggle />
               <Button
                 variant="ghost"
                 size="icon"

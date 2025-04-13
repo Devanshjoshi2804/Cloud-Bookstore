@@ -1,46 +1,53 @@
-import { createMiddlewareClient } from '@supabase/auth-helpers-nextjs'
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
+import { getToken } from 'next-auth/jwt'
 
-export async function middleware(req: NextRequest) {
-  const res = NextResponse.next()
-  const supabase = createMiddlewareClient({ req, res })
+// Define paths that don't require authentication
+const publicPaths = [
+  '/auth',
+  '/api/auth',
+  '/',  // Landing page
+]
 
-  // Refresh session if expired
-  const {
-    data: { session },
-  } = await supabase.auth.getSession()
+export async function middleware(request: NextRequest) {
+  const { pathname } = request.nextUrl
 
-  // Protected routes that require authentication
-  const protectedRoutes = ['/profile', '/library']
-  const isProtectedRoute = protectedRoutes.some((route) =>
-    req.nextUrl.pathname.startsWith(route)
+  // Check if the path is public
+  const isPublicPath = publicPaths.some(path => 
+    pathname === path || pathname.startsWith(`${path}/`)
   )
 
-  // If user is not signed in and trying to access a protected route
-  if (!session && isProtectedRoute) {
-    const redirectUrl = new URL('/auth', req.url)
-    redirectUrl.searchParams.set('redirectedFrom', req.nextUrl.pathname)
-    return NextResponse.redirect(redirectUrl)
+  // Get the authentication token - if it exists, the user is logged in
+  const token = await getToken({ 
+    req: request,
+    secret: process.env.NEXTAUTH_SECRET,
+  })
+  
+  // If the user is not logged in and trying to access a protected route, redirect to login
+  if (!token && !isPublicPath) {
+    const url = new URL('/auth', request.url)
+    url.searchParams.set('callbackUrl', encodeURI(request.url))
+    return NextResponse.redirect(url)
   }
 
-  // If user is signed in and trying to access auth page
-  if (session && req.nextUrl.pathname.startsWith('/auth')) {
-    return NextResponse.redirect(new URL('/', req.url))
+  // If the user is logged in and trying to access the login page, redirect to the dashboard
+  if (token && pathname === '/auth') {
+    return NextResponse.redirect(new URL('/library', request.url))
   }
 
-  return res
+  return NextResponse.next()
 }
 
+// Configure which paths this middleware applies to
 export const config = {
   matcher: [
     /*
-     * Match all request paths except for the ones starting with:
+     * Match all request paths except:
      * - _next/static (static files)
      * - _next/image (image optimization files)
      * - favicon.ico (favicon file)
      * - public folder
      */
-    '/((?!_next/static|_next/image|favicon.ico|public).*)',
+    '/((?!_next/static|_next/image|favicon.ico|assets).*)',
   ],
 } 
