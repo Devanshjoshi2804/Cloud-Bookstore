@@ -110,41 +110,6 @@ export function Features() {
         </div>
       </section>
 
-      {/* Benefits numbers section */}
-      <section className="py-16 bg-primary/5 relative overflow-hidden">
-        <div className="absolute inset-0 opacity-30 [mask-image:radial-gradient(ellipse_80%_50%_at_50%_0%,#000_70%,transparent_110%)]">
-          <div className="absolute inset-0 bg-grid-white/[0.2] [mask-image:linear-gradient(to_bottom,transparent,white,transparent)]" />
-        </div>
-        
-        <div className="container px-4 mx-auto relative z-10">
-          <motion.div 
-            className="grid grid-cols-2 md:grid-cols-4 gap-8"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
-            <div className="flex flex-col items-center text-center">
-              <div className="text-4xl font-bold text-primary mb-2">10K+</div>
-              <div className="text-sm text-muted-foreground">Books Available</div>
-            </div>
-            <div className="flex flex-col items-center text-center">
-              <div className="text-4xl font-bold text-primary mb-2">5K+</div>
-              <div className="text-sm text-muted-foreground">Happy Readers</div>
-            </div>
-            <div className="flex flex-col items-center text-center">
-              <div className="text-4xl font-bold text-primary mb-2">50+</div>
-              <div className="text-sm text-muted-foreground">Categories</div>
-            </div>
-            <div className="flex flex-col items-center text-center">
-              <div className="text-4xl font-bold text-primary mb-2">24/7</div>
-              <div className="text-sm text-muted-foreground">Reader Support</div>
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* CTA Section */}
       <section className="py-24 bg-background relative overflow-hidden">
         <div className="absolute inset-0 bg-primary/5 [clip-path:polygon(0_0,100%_25%,100%_75%,0%_100%)] -z-10" />
         
