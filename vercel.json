@@ -1,0 +1,15 @@
+{
+  "buildCommand": "npm install --legacy-peer-deps && npm run build",
+  "outputDirectory": ".next",
+  "installCommand": "npm install --legacy-peer-deps",
+  "framework": "nextjs",
+  "routes": [
+    {
+      "src": "/api/auth/(.*)",
+      "dest": "/api/auth/$1"
+    }
+  ],
+  "env": {
+    "NODE_ENV": "production"
+  }
+} 
