@@ -13,10 +13,10 @@ export default function HomePage() {
       <Hero />
       <CategoryPreview />
       <Features />
-      <BookCarousel title="New Releases" category="new" />
-      <Testimonials />
+      {/* <BookCarousel title="New Releases" category="new" /> */}
+      {/* <Testimonials /> */}
       <BookCarousel title="Popular Picks" category="popular" />
-      <CTA />
+      {/* <CTA /> */}
     </div>
   )
 }
